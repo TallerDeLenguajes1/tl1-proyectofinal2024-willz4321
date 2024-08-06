@@ -12,13 +12,16 @@ namespace videoGame
         protected int maxAtaques;
         protected DateTime instanteUltimoAtaque;
         protected float milisegundosEntreAtaques;
-        
-        public ListaAtaques()
+        protected double danio;
+        protected int velAtaque;
+        public ListaAtaques(double fuerza, int destreza)
         {
             ataques = new List<Ataque>();
             maxAtaques = 3;
             instanteUltimoAtaque = DateTime.Now;
             milisegundosEntreAtaques = 200;
+            danio = fuerza;
+            velAtaque = destreza;
         }
 
         public void IntentarAnadir(int x, int y)
@@ -29,7 +32,7 @@ namespace videoGame
             if (ataques.Count >= maxAtaques)
                 return;
 
-            Ataque d = new Ataque();
+            Ataque d = new Ataque(velAtaque);
             d.Activar(x, y);
             ataques.Add(d);
             instanteUltimoAtaque = DateTime.Now;
@@ -65,17 +68,23 @@ namespace videoGame
             }
         }
 
-        public bool ImpactoCon(Sprite s)
+        public bool ImpactoCon(Sprite s, Enemigo enemigo)
         {
             foreach (Ataque d in ataques)
             {
                 if (s.ColisionaCon(d))
                 {
+                    enemigo.Personaje.Salud1 -= danio * 1.5;
                     d.SetActivo(false);
                     return true;
                 }
             }
             return false;
+        }
+
+        public void Vaciar()
+        {
+            ataques.Clear();
         }
     }
 }

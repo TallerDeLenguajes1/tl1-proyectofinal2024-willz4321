@@ -82,7 +82,7 @@ namespace videoGame
                     500, 400, 180, 180, 180, new Fuente("datos\\joystix.ttf", 18));
 
                 Hardware.VisualizarOculta();
-                Hardware.Pausa(50);
+                Hardware.Pausa(70);
 
                 if (Hardware.TeclaPulsada(Hardware.TECLA_1))
                 {

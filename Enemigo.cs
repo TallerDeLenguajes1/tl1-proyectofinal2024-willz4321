@@ -8,15 +8,25 @@ namespace videoGame
 {
      class Enemigo: Sprite 
     {
-        public Enemigo()
-            : base("assets\\bestia2Normal.png")
+        public Personaje Personaje { get; private set; }
+        public Enemigo(Personaje personaje)
+            : base(personaje.DatosPersonaje.AssetNormal1)
         {
+            Personaje = personaje;
             ancho = 70;
             alto = 90;
             x = 640;
             y = 100;
-            velocX = 10;
-            velocY = 10;
+            velocX = personaje.Velocidad1;
+            velocY = personaje.Velocidad1;
+
+            // Configurar las secuencias según el tipo de personaje.
+            CargarSecuencia(Sprite.DERECHA, new string[] {
+            personaje.DatosPersonaje.AssetNormal1,
+            personaje.DatosPersonaje.AssetAtaque1
+              });
+            CambiarDireccion(Sprite.DERECHA);
+            SetFramesPorFotograma(30);
         }
 
         public override void Mover()

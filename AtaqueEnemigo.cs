@@ -8,10 +8,11 @@ namespace videoGame
 {
      class AtaqueEnemigo: Ataque
     {
-        public AtaqueEnemigo()
+        public AtaqueEnemigo(int destreza) : base(0)
         {
             velocX = 0;
-            velocY = 8;   
+            velocY = destreza;
+            
         }
     }
 }

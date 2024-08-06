@@ -6,59 +6,70 @@ using System.Threading.Tasks;
 
 namespace videoGame
 {
-     class Partida
+    class Partida
     {
         bool partidaTerminada;
         Jugador jugador;
         Enemigo enemigo;
+        List<Enemigo> enemigoList;
+        List<ListaAtaqueEnemigo> listaAtaqueEnemigos;
         ListaAtaques ataques;
         ListaAtaqueEnemigo ataquesEnemigo;
         int puntos;
         double vidas;
+        double vidasEnemigo;
         Marcador marcador;
+        Random random;
+
+        int contador;
+
+        public int Contador { get => contador; set => contador = value; }
 
         public Partida(Datos datosPersonaje)
         {
             partidaTerminada = false;
- 
-
+            random = new Random();
+            enemigoList = new List<Enemigo>();
+            listaAtaqueEnemigos = new List<ListaAtaqueEnemigo>();
+            contador =  0;
+            
             switch (datosPersonaje.Tipo)
             {
                 case ClasesP.ORCO:
-                Orco orco = new Orco(datosPersonaje);
-                vidas = orco.Salud1;
-                 jugador = new Jugador(orco);
+                    Orco orco = new Orco(datosPersonaje);
+                    vidas = orco.Salud1;
+                    jugador = new Jugador(orco);
                     break;
 
                 case ClasesP.CABALLERO:
-                Caballero caballero = new Caballero(datosPersonaje);
-                vidas = caballero.Salud1;
-                 jugador = new Jugador(caballero); 
+                    Caballero caballero = new Caballero(datosPersonaje);
+                    vidas = caballero.Salud1;
+                    jugador = new Jugador(caballero);
                     break;
 
                 case ClasesP.MAGO:
-                Mago mago = new Mago(datosPersonaje);
-                vidas = mago.Salud1;
-                 jugador = new Jugador(mago);
+                    Mago mago = new Mago(datosPersonaje);
+                    vidas = mago.Salud1;
+                    jugador = new Jugador(mago);
                     break;
 
                 case ClasesP.BESTIA:
-                Bestia bestia = new Bestia(datosPersonaje);
-                vidas = 3;
-                 jugador = new Jugador(bestia);
+                    Bestia bestia = new Bestia(datosPersonaje);
+                    vidas = bestia.Salud1;
+                    jugador = new Jugador(bestia);
                     break;
 
                 default:
                     break;
             }
 
-           
-            enemigo = new Enemigo();
-            ataques = new ListaAtaques();
-            ataquesEnemigo = new ListaAtaqueEnemigo();
+            CrearEnemigosAleatorios(datosPersonaje.Tipo);
+
+
+            ataques = new ListaAtaques(jugador.Personaje.Fuerza1, jugador.Personaje.Destreza1);
             marcador = new Marcador();
             puntos = 0;
-            
+
         }
 
         public void Lanzar()
@@ -78,10 +89,11 @@ namespace videoGame
             Hardware.BorrarPantallaOculta();
             marcador.SetVidas(vidas);
             marcador.Dibujar();
-            enemigo.Dibujar();
+
+            enemigoList[Contador].Dibujar();
             jugador.Dibujar();
             ataques.Dibujar();
-            ataquesEnemigo.Dibujar();
+            listaAtaqueEnemigos[contador].Dibujar();
             Hardware.VisualizarOculta();
         }
 
@@ -104,46 +116,106 @@ namespace videoGame
 
         private void AnimarElementos()
         {
-            enemigo.Mover();
+    
+                enemigoList[Contador].Mover();
+
             ataques.Mover();
-            ataquesEnemigo.Mover(enemigo);
+            listaAtaqueEnemigos[contador].Mover(enemigoList[Contador]);
         }
 
         private void ComprobarEstadoDelJuego()
         {
-            if (jugador.ColisionaCon(enemigo))
-                partidaTerminada = true;
 
-            if (ataquesEnemigo.ImpactoCon(jugador))
-                PerderVida();
-
-            //if (ataquesEnemigo.ImpactoCon(ataques))
-            //    partidaTerminada = true;
+            if (listaAtaqueEnemigos[contador].ImpactoCon(jugador, jugador))
+                PerderVida(jugador);
 
 
-            if (ataques.ImpactoCon(enemigo))
-                partidaTerminada = true;
+            if (ataques.ImpactoCon(enemigoList[Contador], enemigoList[Contador]))
+            {
+
+                PerderVidaEnemigo(enemigoList[Contador]);
+                if (Contador+1 == enemigoList.Count)
+                {
+                    partidaTerminada = true ;
+                }
+            }
         }
 
         private static void PausaHastaFinDeFotograma()
         {
             Hardware.Pausa(20);
         }
+
         public void IncrementarPuntos(int puntos)
         {
             this.puntos += puntos;
             marcador.SetPuntos(this.puntos);
         }
 
-        private void PerderVida()
+        private void PerderVida(Jugador jugador)
         {
-            vidas--;
+            vidas = jugador.Personaje.Salud1;
             marcador.SetVidas(vidas);
             jugador.MoverA(640, 600);
-            ataquesEnemigo.Vaciar();
+            listaAtaqueEnemigos[contador].Vaciar();
             if (vidas <= 0)
                 partidaTerminada = true;
         }
-    }
 
-}
+        private void PerderVidaEnemigo(Enemigo enemigo)
+        {
+
+            if (enemigo.Personaje.Salud1 <= 0)
+            {
+                contador++;
+            }
+            ataques.Vaciar();
+           
+        }
+        private void CrearEnemigosAleatorios(ClasesP tipoJugador)
+        {
+           
+            List<ClasesP> rolesDisponibles = new List<ClasesP>
+                {
+                    ClasesP.ORCO,
+                    ClasesP.CABALLERO,
+                    ClasesP.MAGO,
+                    ClasesP.BESTIA
+                };
+
+            rolesDisponibles.Remove(tipoJugador);
+
+            // Crear 4 enemigos aleatorios de los roles disponibles
+            for (int i = 0; i < 4; i++)
+            {
+                ClasesP rolAleatorio = rolesDisponibles[random.Next(rolesDisponibles.Count)];
+                Personaje personaje;
+
+                switch (rolAleatorio)
+                {
+                    case ClasesP.ORCO:
+                        personaje = new Orco(new Datos(ClasesP.ORCO, "Torurt", "El Orco", DateTime.Parse("1710-12-01"), 150, "", ""));
+                        break;
+                    case ClasesP.CABALLERO:
+                        personaje = new Caballero(new Datos(ClasesP.CABALLERO, "Arthur Dayne", "La espada del amanecer", DateTime.Parse("1850-08-21"), 30, "", ""));
+                        break;
+                    case ClasesP.MAGO:
+                        personaje = new Mago(new Datos(ClasesP.MAGO, "Gandalf", "El blanco", DateTime.Parse("1810-12-01"), 80, "", ""));
+                        break;
+                    case ClasesP.BESTIA:
+                        personaje = new Bestia(new Datos(ClasesP.BESTIA, "Cthulhu", "Cthulhu", DateTime.Parse("0001-12-01"), 2000, "", ""));
+                        break;
+                    default:
+                        throw new Exception("Rol desconocido");
+                }
+
+                Enemigo enemigo = new Enemigo(personaje);
+                ataquesEnemigo = new ListaAtaqueEnemigo(enemigo.Personaje.Fuerza1, enemigo.Personaje.Destreza1);
+                listaAtaqueEnemigos.Add( ataquesEnemigo );
+                enemigoList.Add(enemigo);
+
+                Console.WriteLine(enemigoList.Count);
+            }
+        }
+     }
+ }

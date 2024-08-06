@@ -7,10 +7,12 @@ namespace videoGame
      class ListaAtaqueEnemigo: ListaAtaques
     {
 
-        public ListaAtaqueEnemigo()
+        public ListaAtaqueEnemigo(double fuerza, int destreza): base(0, 0) 
         {
             ataques = new List<Ataque>();
             maxAtaques = 3;
+            danio = fuerza;
+            velAtaque = destreza;
         }
 
         public void IntentarAnadir(int x, int y)
@@ -22,7 +24,7 @@ namespace videoGame
             if (ataques.Count >= maxAtaques)
                 return;
 
-            AtaqueEnemigo d = new AtaqueEnemigo();
+            AtaqueEnemigo d = new AtaqueEnemigo(velAtaque);
             d.Activar(x, y);
             ataques.Add(d);
             instanteUltimoAtaque = DateTime.Now;
@@ -50,32 +52,19 @@ namespace videoGame
             }
         }
 
-        public bool ImpactoCon(Sprite s)
+        public bool ImpactoCon(Sprite s, Jugador jugador)
         {
             foreach(AtaqueEnemigo d in ataques)
             {
                 if (s.ColisionaCon(d))
                 {
+                    jugador.Personaje.Salud1 -= danio*1.5;
                     d.SetActivo(false);
                     return true;
                 }
             }
             return false;
         }
-
-        //public void ImpactoMutuo(ListaAtaques ataque)
-        //{
-        //    foreach (var ataq in ataques)
-        //    {
-
-        //            if (ataq.ColisionaCon(ataque))
-        //            {
-        //                ataques.Remove(ataq);
-        //                ataquesEnemigo.Remove(ataqE);
-        //            }
-
-        //    }
-        //}
 
         public void Vaciar()
         {

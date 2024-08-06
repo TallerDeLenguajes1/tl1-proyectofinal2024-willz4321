@@ -4,12 +4,12 @@ namespace videoGame
     public class Caracteristicas
     {
        private int Velocidad;
-       private double Destreza;
+       private int Destreza;
        private double Fuerza;
        private int Nivel;
        private double Salud;
 
-        public Caracteristicas(int velocidad, double destreza, double fuerza, int nivel, double salud)
+        public Caracteristicas(int velocidad, int destreza, double fuerza, int nivel, double salud)
         {
             Velocidad1 = velocidad;
             Destreza1 = destreza;
@@ -19,7 +19,7 @@ namespace videoGame
         }
 
         public int Velocidad1 { get => Velocidad; set => Velocidad = value; }
-        public double Destreza1 { get => Destreza; set => Destreza = value; }
+        public int Destreza1 { get => Destreza; set => Destreza = value; }
         public double Fuerza1 { get => Fuerza; set => Fuerza = value; }
         public int Nivel1 { get => Nivel; set => Nivel = value; }
         public double Salud1 { get => Salud; set => Salud = value; }

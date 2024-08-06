@@ -8,13 +8,13 @@ namespace videoGame
 {
      class Ataque: Sprite
     {
-        public Ataque()
+        public Ataque(int destreza)
     : base("datos\\disparo.png")
         {
             ancho = 6;
             alto = 15;
             velocX = 0;
-            velocY = -9;
+            velocY = -destreza;
             activo = false;
         }
 
