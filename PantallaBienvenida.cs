@@ -43,11 +43,10 @@ namespace videoGame
                     string apodo = SolicitarInput("Introduce el apodo del personaje:");
                     DateTime nacimiento = SolicitarFecha("Introduce la fecha de nacimiento (YYYY-MM-DD):");
                     int edad = SolicitarEdad(nacimiento);
-                    string assetNormal = "";
-                    string assetAtaque = "";
 
-                    Datos datosPersonaje = new Datos(tipo, nombre, apodo, nacimiento, edad, assetNormal, assetAtaque);
+                    Datos datosPersonaje = new Datos(tipo, nombre, apodo, nacimiento, edad, "", "");
                     Partida partida = new Partida(datosPersonaje);
+                    bienvenidaTerminada = false;
                     partida.Lanzar();
                 }
             }

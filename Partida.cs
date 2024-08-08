@@ -6,6 +6,8 @@ namespace videoGame
     class Partida
     {
         bool partidaTerminada;
+        bool finJuego;
+        int cantidadEnemigos;
         Jugador jugador;
         Enemigo enemigo;
         List<Enemigo> enemigoList;
@@ -29,6 +31,8 @@ namespace videoGame
             enemigoList = new List<Enemigo>();
             listaAtaqueEnemigos = new List<ListaAtaqueEnemigo>();
             contador = 0;
+            cantidadEnemigos = 0;
+            finJuego = false;
 
             switch (datosPersonaje.Tipo)
             {
@@ -131,9 +135,9 @@ namespace videoGame
             {
 
                 PerderVidaEnemigo(enemigoList[Contador]);
-                if (Contador == enemigoList.Count)
+                if (finJuego)
                 {
-                    partidaTerminada = true;
+                    Fin();
                 }
             }
         }
@@ -168,37 +172,48 @@ namespace videoGame
 
             if (enemigo.Personaje.Salud1 <= 0)
             {
-                Console.WriteLine(contador+1);
                 if (contador + 1 == enemigoList.Count)
                 {
-                    do
+                    Console.WriteLine(contador + 1);
+                    Console.WriteLine(cantidadEnemigos);
+
+                    if (cantidadEnemigos < contador + 1)
                     {
-                        Hardware.BorrarPantallaOculta();
-                        string mensaje = $"Felicidades, haz derrotado a {enemigo.Personaje.DatosPersonaje.Nombre1} - {enemigo.Personaje.DatosPersonaje.Apodo1}";
-                        string mensaje2 = $"Es hora de enfrentarte al jefe final!!!!";
-                        Hardware.EscribirTextoOculta(mensaje,
-                            100, 150, // Coordenadas
-                            200, 200, 200, // Colores
-                            tipoDeLetraGrande);
-                        Hardware.EscribirTextoOculta(mensaje2,
-                            200, 250, // Coordenadas
-                            200, 200, 200, // Colores
-                            tipoDeLetraGrande);
-                        Hardware.EscribirTextoOculta("Pulsa J para jugar",
-                            500, 350, // Coordenadas
-                            180, 180, 180, // Colores
-                            tipoDeLetra);
-
-                        Hardware.VisualizarOculta();
-                        Hardware.Pausa(20);
-
-                        if (Hardware.TeclaPulsada(Hardware.TECLA_J))
+                        finJuego = true;
+                    }
+                    else
+                    {
+                        do
                         {
-                            terminar = true;
+                            Hardware.BorrarPantallaOculta();
+                            string mensaje = $"Felicidades, haz derrotado a {enemigo.Personaje.DatosPersonaje.Nombre1} - {enemigo.Personaje.DatosPersonaje.Apodo1}";
+                            string mensaje2 = $"Es hora de enfrentarte al jefe final!!!!";
+                            Hardware.EscribirTextoOculta(mensaje,
+                                100, 150, // Coordenadas
+                                200, 200, 200, // Colores
+                                tipoDeLetraGrande);
+                            Hardware.EscribirTextoOculta(mensaje2,
+                                200, 250, // Coordenadas
+                                200, 200, 200, // Colores
+                                tipoDeLetraGrande);
+                            Hardware.EscribirTextoOculta("Pulsa J para jugar",
+                                500, 350, // Coordenadas
+                                180, 180, 180, // Colores
+                                tipoDeLetra);
 
-                        }
+                            Hardware.VisualizarOculta();
+                            Hardware.Pausa(20);
 
-                    } while (!terminar);
+                            if (Hardware.TeclaPulsada(Hardware.TECLA_J))
+                            {
+                                terminar = true;
+                                CrearJefe();
+                                contador ++;
+                            }
+
+                        } while (!terminar);
+                    }
+ 
                 }
                 else
                 {
@@ -231,7 +246,11 @@ namespace videoGame
 
                     } while (!terminar);
                 }
-         
+                if (contador == 100)
+                {
+                    finJuego = true;
+                }
+
 
             }
             ataques.Vaciar();
@@ -267,11 +286,12 @@ namespace videoGame
                         personaje = new Mago(new Datos(ClasesP.MAGO, "Gandalf", "El blanco", DateTime.Parse("1810-12-01"), 80, "", ""));
                         break;
                     case ClasesP.BESTIA:
-                        personaje = new Bestia(new Datos(ClasesP.BESTIA, "Cthulhu", "Cthulhu", DateTime.Parse("0001-12-01"), 2000, "", ""));
+                        personaje = new Bestia(new Datos(ClasesP.BESTIA, "Ahrimasphaeinn", "La daga roja", DateTime.Parse("0531-12-01"), 2000, "", ""));
                         break;
                     default:
                         throw new Exception("Rol desconocido");
                 }
+
 
                 Enemigo enemigo = new Enemigo(personaje);
                 ataquesEnemigo = new ListaAtaqueEnemigo(enemigo.Personaje.Fuerza1, enemigo.Personaje.Destreza1, enemigo.Personaje.DatosPersonaje.Ataque1);
@@ -279,7 +299,50 @@ namespace videoGame
                 enemigoList.Add(enemigo);
 
             }
-            Console.WriteLine(enemigoList.Count);
+            cantidadEnemigos = enemigoList.Count;
+        }
+        private void CrearJefe()
+        {
+            Personaje personaje;
+
+            personaje = new JefeFinal(new Datos(ClasesP.JEFE, "Cthulhu", "Cthulhu", DateTime.Parse("0001-12-01"), 2000, "", ""));
+
+            Enemigo enemigo = new Enemigo(personaje);
+            ataquesEnemigo = new ListaAtaqueEnemigo(enemigo.Personaje.Fuerza1, enemigo.Personaje.Destreza1, enemigo.Personaje.DatosPersonaje.Ataque1);
+            listaAtaqueEnemigos.Add(ataquesEnemigo);
+            enemigoList.Add(enemigo);
+        }
+
+        private void Fin()
+        {
+            Fuente tipoDeLetra, tipoDeLetraGrande;
+            tipoDeLetra = new Fuente("datos\\joystix.ttf", 18);
+            tipoDeLetraGrande = new Fuente("datos\\joystix.ttf", 28);
+            bool cerrar = false;
+            do
+            {
+                Hardware.BorrarPantallaOculta();
+                string mensaje = $"Felicidades, {jugador.Personaje.DatosPersonaje.Nombre1} - {jugador.Personaje.DatosPersonaje.Apodo1} haz ganado el juego";
+      
+                Hardware.EscribirTextoOculta(mensaje,
+                    50, 150, // Coordenadas
+                    200, 200, 200, // Colores
+                    tipoDeLetraGrande);
+                Hardware.EscribirTextoOculta("Pulsa F para Finalizar",
+                    500, 350, // Coordenadas
+                    180, 180, 180, // Colores
+                    tipoDeLetra);
+
+                Hardware.VisualizarOculta();
+                Hardware.Pausa(20);
+
+                if (Hardware.TeclaPulsada(Hardware.TECLA_F))
+                {
+                    partidaTerminada = true;
+                    cerrar= true;
+                }
+
+            } while (!cerrar);
         }
     }
 }
