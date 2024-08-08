@@ -7,12 +7,13 @@ namespace videoGame
      class ListaAtaqueEnemigo: ListaAtaques
     {
 
-        public ListaAtaqueEnemigo(double fuerza, int destreza): base(0, 0) 
+        public ListaAtaqueEnemigo(double fuerza, int destreza, string ataqueE): base(0, 0, "") 
         {
             ataques = new List<Ataque>();
             maxAtaques = 3;
             danio = fuerza;
             velAtaque = destreza;
+            ataque = ataqueE;
         }
 
         public void IntentarAnadir(int x, int y)
@@ -24,7 +25,7 @@ namespace videoGame
             if (ataques.Count >= maxAtaques)
                 return;
 
-            AtaqueEnemigo d = new AtaqueEnemigo(velAtaque);
+            AtaqueEnemigo d = new AtaqueEnemigo(velAtaque, ataque);
             d.Activar(x, y);
             ataques.Add(d);
             instanteUltimoAtaque = DateTime.Now;

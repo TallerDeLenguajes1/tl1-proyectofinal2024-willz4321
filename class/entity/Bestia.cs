@@ -7,6 +7,7 @@
         {
              datos.AssetNormal1 = "assets\\bestia1Normal.png";
              datos.AssetAtaque1 = "assets\\bestia1Ataque.png";
+             datos.Ataque1 = "datos\\meteoro.png";
         }
     }
 }

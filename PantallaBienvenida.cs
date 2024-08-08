@@ -1,10 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using System;
 
 namespace videoGame
 {
@@ -49,8 +43,8 @@ namespace videoGame
                     string apodo = SolicitarInput("Introduce el apodo del personaje:");
                     DateTime nacimiento = SolicitarFecha("Introduce la fecha de nacimiento (YYYY-MM-DD):");
                     int edad = SolicitarEdad(nacimiento);
-                    string assetNormal = ""; 
-                    string assetAtaque = ""; 
+                    string assetNormal = "";
+                    string assetAtaque = "";
 
                     Datos datosPersonaje = new Datos(tipo, nombre, apodo, nacimiento, edad, assetNormal, assetAtaque);
                     Partida partida = new Partida(datosPersonaje);
@@ -62,7 +56,7 @@ namespace videoGame
 
         private ClasesP SolicitarTipoPersonaje()
         {
-             bool seleccionHecha = false;
+            bool seleccionHecha = false;
             ClasesP tipoSeleccionado = ClasesP.ORCO;
 
             while (!seleccionHecha)

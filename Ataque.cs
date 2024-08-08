@@ -8,8 +8,8 @@ namespace videoGame
 {
      class Ataque: Sprite
     {
-        public Ataque(int destreza)
-    : base("datos\\disparo.png")
+        public Ataque(int destreza, string ataque)
+    : base(ataque)
         {
             ancho = 6;
             alto = 15;

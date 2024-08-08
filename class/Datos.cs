@@ -11,6 +11,8 @@ namespace videoGame
        
        private string AssetNormal;
        private string AssetAtaque;
+       private string Ataque;
+
         public Datos(ClasesP tipo, string nombre, string apodo, DateTime nacimiento, int edad, string assetNormal, string assetAtaque)
         {
             this.tipo = tipo;
@@ -29,5 +31,6 @@ namespace videoGame
         public int Edad1 { get => Edad; set => Edad = value; }
         public string AssetNormal1 { get => AssetNormal; set => AssetNormal = value; }
         public string AssetAtaque1 { get => AssetAtaque; set => AssetAtaque = value; }
+        public string Ataque1 { get => Ataque; set => Ataque = value; }
     }
 }

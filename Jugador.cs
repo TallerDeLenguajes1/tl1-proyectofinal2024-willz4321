@@ -9,8 +9,8 @@ namespace videoGame
             : base(personaje.DatosPersonaje.AssetNormal1)
         {
             Personaje = personaje;
-            ancho = 70;
-            alto = 90;
+            ancho = 90;
+            alto = 120;
             x = 640;
             y = 560;
             velocX = personaje.Velocidad1;
@@ -28,24 +28,57 @@ namespace videoGame
 
         public void MoverDerecha()
         {
-            x += velocX;
+           
+            SiguienteFotograma();
+            if (x >= 1100)
+            {
+                x = x + 0;
+            }
+            else
+            {
+                x += velocX;
+            }
             SiguienteFotograma();
         }
 
         public void MoverIzquierda()
         {
-            x -= velocX;
+           
             SiguienteFotograma();
+            if (x <= 100)
+            {
+                x = x + 0;
+            }
+            else
+            {
+                x -= velocX;
+            }
         }
 
         public void MoverArriba()
         {
-            y -= velocY;
+            
+            if (y <= 400)
+            {
+                y = y + 0;
+            }
+            else
+            {
+                y -= velocY;
+            }
         }
 
         public void MoverAbajo()
         {
-            y += velocY;
+           
+            if (y >= 580)
+            {
+                y = y + 0;
+            }
+            else
+            {
+                y += velocY;
+            }
         }
 
         public int GetVelocX()

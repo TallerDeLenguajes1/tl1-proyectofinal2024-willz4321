@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace videoGame
 {
@@ -31,8 +28,8 @@ namespace videoGame
             random = new Random();
             enemigoList = new List<Enemigo>();
             listaAtaqueEnemigos = new List<ListaAtaqueEnemigo>();
-            contador =  0;
-            
+            contador = 0;
+
             switch (datosPersonaje.Tipo)
             {
                 case ClasesP.ORCO:
@@ -66,7 +63,7 @@ namespace videoGame
             CrearEnemigosAleatorios(datosPersonaje.Tipo);
 
 
-            ataques = new ListaAtaques(jugador.Personaje.Fuerza1, jugador.Personaje.Destreza1);
+            ataques = new ListaAtaques(jugador.Personaje.Fuerza1, jugador.Personaje.Destreza1, jugador.Personaje.DatosPersonaje.Ataque1);
             marcador = new Marcador();
             puntos = 0;
 
@@ -116,8 +113,8 @@ namespace videoGame
 
         private void AnimarElementos()
         {
-    
-                enemigoList[Contador].Mover();
+
+            enemigoList[Contador].Mover();
 
             ataques.Mover();
             listaAtaqueEnemigos[contador].Mover(enemigoList[Contador]);
@@ -134,9 +131,9 @@ namespace videoGame
             {
 
                 PerderVidaEnemigo(enemigoList[Contador]);
-                if (Contador+1 == enemigoList.Count)
+                if (Contador == enemigoList.Count)
                 {
-                    partidaTerminada = true ;
+                    partidaTerminada = true;
                 }
             }
         }
@@ -164,17 +161,84 @@ namespace videoGame
 
         private void PerderVidaEnemigo(Enemigo enemigo)
         {
+            bool terminar = false;
+            Fuente tipoDeLetra, tipoDeLetraGrande;
+            tipoDeLetra = new Fuente("datos\\joystix.ttf", 18);
+            tipoDeLetraGrande = new Fuente("datos\\joystix.ttf", 28);
 
             if (enemigo.Personaje.Salud1 <= 0)
             {
-                contador++;
+                Console.WriteLine(contador+1);
+                if (contador + 1 == enemigoList.Count)
+                {
+                    do
+                    {
+                        Hardware.BorrarPantallaOculta();
+                        string mensaje = $"Felicidades, haz derrotado a {enemigo.Personaje.DatosPersonaje.Nombre1} - {enemigo.Personaje.DatosPersonaje.Apodo1}";
+                        string mensaje2 = $"Es hora de enfrentarte al jefe final!!!!";
+                        Hardware.EscribirTextoOculta(mensaje,
+                            100, 150, // Coordenadas
+                            200, 200, 200, // Colores
+                            tipoDeLetraGrande);
+                        Hardware.EscribirTextoOculta(mensaje2,
+                            200, 250, // Coordenadas
+                            200, 200, 200, // Colores
+                            tipoDeLetraGrande);
+                        Hardware.EscribirTextoOculta("Pulsa J para jugar",
+                            500, 350, // Coordenadas
+                            180, 180, 180, // Colores
+                            tipoDeLetra);
+
+                        Hardware.VisualizarOculta();
+                        Hardware.Pausa(20);
+
+                        if (Hardware.TeclaPulsada(Hardware.TECLA_J))
+                        {
+                            terminar = true;
+
+                        }
+
+                    } while (!terminar);
+                }
+                else
+                {
+                    do
+                    {
+                        Hardware.BorrarPantallaOculta();
+                        string mensaje = $"Felicidades, haz derrotado a {enemigo.Personaje.DatosPersonaje.Nombre1} - {enemigo.Personaje.DatosPersonaje.Apodo1}";
+                        string mensaje2 = $"Tu siguente rival sera {enemigoList[contador + 1].Personaje.DatosPersonaje.Nombre1} - {enemigoList[contador + 1].Personaje.DatosPersonaje.Apodo1}";
+                        Hardware.EscribirTextoOculta(mensaje,
+                            100, 150, // Coordenadas
+                            200, 200, 200, // Colores
+                            tipoDeLetraGrande);
+                        Hardware.EscribirTextoOculta(mensaje2,
+                            200, 250, // Coordenadas
+                            200, 200, 200, // Colores
+                            tipoDeLetraGrande);
+                        Hardware.EscribirTextoOculta("Pulsa J para jugar",
+                            500, 350, // Coordenadas
+                            180, 180, 180, // Colores
+                            tipoDeLetra);
+
+                        Hardware.VisualizarOculta();
+                        Hardware.Pausa(20);
+
+                        if (Hardware.TeclaPulsada(Hardware.TECLA_J))
+                        {
+                            terminar = true;
+                            contador++;
+                        }
+
+                    } while (!terminar);
+                }
+         
+
             }
             ataques.Vaciar();
-           
         }
         private void CrearEnemigosAleatorios(ClasesP tipoJugador)
         {
-           
+
             List<ClasesP> rolesDisponibles = new List<ClasesP>
                 {
                     ClasesP.ORCO,
@@ -210,12 +274,12 @@ namespace videoGame
                 }
 
                 Enemigo enemigo = new Enemigo(personaje);
-                ataquesEnemigo = new ListaAtaqueEnemigo(enemigo.Personaje.Fuerza1, enemigo.Personaje.Destreza1);
-                listaAtaqueEnemigos.Add( ataquesEnemigo );
+                ataquesEnemigo = new ListaAtaqueEnemigo(enemigo.Personaje.Fuerza1, enemigo.Personaje.Destreza1, enemigo.Personaje.DatosPersonaje.Ataque1);
+                listaAtaqueEnemigos.Add(ataquesEnemigo);
                 enemigoList.Add(enemigo);
 
-                Console.WriteLine(enemigoList.Count);
             }
+            Console.WriteLine(enemigoList.Count);
         }
-     }
- }
+    }
+}

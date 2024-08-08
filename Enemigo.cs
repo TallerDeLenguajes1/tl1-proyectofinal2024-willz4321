@@ -13,8 +13,8 @@ namespace videoGame
             : base(personaje.DatosPersonaje.AssetNormal1)
         {
             Personaje = personaje;
-            ancho = 70;
-            alto = 90;
+            ancho = 90;
+            alto = 120;
             x = 640;
             y = 100;
             velocX = personaje.Velocidad1;

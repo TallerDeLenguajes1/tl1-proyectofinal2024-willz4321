@@ -7,6 +7,7 @@ namespace videoGame
         {
              datos.AssetNormal1 = "assets\\magoNormal.png";
              datos.AssetAtaque1 = "assets\\magoAtack.png";
+            datos.Ataque1 = "datos\\rasengan.png";
         }
     }
 }    

@@ -14,7 +14,8 @@ namespace videoGame
         protected float milisegundosEntreAtaques;
         protected double danio;
         protected int velAtaque;
-        public ListaAtaques(double fuerza, int destreza)
+        protected string ataque;
+        public ListaAtaques(double fuerza, int destreza, string ataque)
         {
             ataques = new List<Ataque>();
             maxAtaques = 3;
@@ -22,6 +23,7 @@ namespace videoGame
             milisegundosEntreAtaques = 200;
             danio = fuerza;
             velAtaque = destreza;
+            this.ataque = ataque;
         }
 
         public void IntentarAnadir(int x, int y)
@@ -32,7 +34,7 @@ namespace videoGame
             if (ataques.Count >= maxAtaques)
                 return;
 
-            Ataque d = new Ataque(velAtaque);
+            Ataque d = new Ataque(velAtaque, ataque);
             d.Activar(x, y);
             ataques.Add(d);
             instanteUltimoAtaque = DateTime.Now;
