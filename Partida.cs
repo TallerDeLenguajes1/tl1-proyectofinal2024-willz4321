@@ -66,8 +66,7 @@ namespace videoGame
 
             CrearEnemigosAleatorios(datosPersonaje.Tipo);
 
-
-            ataques = new ListaAtaques(jugador.Personaje.Fuerza1, jugador.Personaje.Destreza1, jugador.Personaje.DatosPersonaje.Ataque1);
+            ataques = new ListaAtaques(jugador.Personaje.Fuerza1, jugador.Personaje.Destreza1, jugador.Personaje.DatosPersonaje.Ataque1, jugador.Personaje.DatosPersonaje.AnchoAtaque1, jugador.Personaje.DatosPersonaje.AltoAtaque1);
             marcador = new Marcador();
             puntos = 0;
 
@@ -269,7 +268,7 @@ namespace videoGame
             rolesDisponibles.Remove(tipoJugador);
 
             // Crear 4 enemigos aleatorios de los roles disponibles
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < 1; i++)
             {
                 ClasesP rolAleatorio = rolesDisponibles[random.Next(rolesDisponibles.Count)];
                 Personaje personaje;
@@ -277,16 +276,16 @@ namespace videoGame
                 switch (rolAleatorio)
                 {
                     case ClasesP.ORCO:
-                        personaje = new Orco(new Datos(ClasesP.ORCO, "Torurt", "El Orco", DateTime.Parse("1710-12-01"), 150, "", ""));
+                        personaje = new Orco(new Datos(ClasesP.ORCO, "Torurt", "El Orco", DateTime.Parse("1710-12-01"), 150, "", "", 0, 0, 0, 0));
                         break;
                     case ClasesP.CABALLERO:
-                        personaje = new Caballero(new Datos(ClasesP.CABALLERO, "Arthur Dayne", "La espada del amanecer", DateTime.Parse("1850-08-21"), 30, "", ""));
+                        personaje = new Caballero(new Datos(ClasesP.CABALLERO, "Arthur Dayne", "La espada del amanecer", DateTime.Parse("1850-08-21"), 30, "", "", 0, 0, 0, 0));
                         break;
                     case ClasesP.MAGO:
-                        personaje = new Mago(new Datos(ClasesP.MAGO, "Gandalf", "El blanco", DateTime.Parse("1810-12-01"), 80, "", ""));
+                        personaje = new Mago(new Datos(ClasesP.MAGO, "Gandalf", "El blanco", DateTime.Parse("1810-12-01"), 80, "", "", 0, 0, 0, 0));
                         break;
                     case ClasesP.BESTIA:
-                        personaje = new Bestia(new Datos(ClasesP.BESTIA, "Ahrimasphaeinn", "La daga roja", DateTime.Parse("0531-12-01"), 2000, "", ""));
+                        personaje = new Bestia(new Datos(ClasesP.BESTIA, "Ahrimasphaeinn", "La daga roja", DateTime.Parse("0531-12-01"), 2000, "", "", 0, 0, 0, 0));
                         break;
                     default:
                         throw new Exception("Rol desconocido");
@@ -294,7 +293,7 @@ namespace videoGame
 
 
                 Enemigo enemigo = new Enemigo(personaje);
-                ataquesEnemigo = new ListaAtaqueEnemigo(enemigo.Personaje.Fuerza1, enemigo.Personaje.Destreza1, enemigo.Personaje.DatosPersonaje.Ataque1);
+                ataquesEnemigo = new ListaAtaqueEnemigo(enemigo.Personaje.Fuerza1, enemigo.Personaje.Destreza1, enemigo.Personaje.DatosPersonaje.Ataque1, enemigo.Personaje.DatosPersonaje.AnchoAtaque1, enemigo.Personaje.DatosPersonaje.AltoAtaque1);
                 listaAtaqueEnemigos.Add(ataquesEnemigo);
                 enemigoList.Add(enemigo);
 
@@ -305,10 +304,10 @@ namespace videoGame
         {
             Personaje personaje;
 
-            personaje = new JefeFinal(new Datos(ClasesP.JEFE, "Cthulhu", "Cthulhu", DateTime.Parse("0001-12-01"), 2000, "", ""));
+            personaje = new JefeFinal(new Datos(ClasesP.JEFE, "Cthulhu", "Cthulhu", DateTime.Parse("0001-12-01"), 2000, "", "", 0, 0, 0, 0));
 
             Enemigo enemigo = new Enemigo(personaje);
-            ataquesEnemigo = new ListaAtaqueEnemigo(enemigo.Personaje.Fuerza1, enemigo.Personaje.Destreza1, enemigo.Personaje.DatosPersonaje.Ataque1);
+            ataquesEnemigo = new ListaAtaqueEnemigo(enemigo.Personaje.Fuerza1, enemigo.Personaje.Destreza1, enemigo.Personaje.DatosPersonaje.Ataque1, enemigo.Personaje.DatosPersonaje.AnchoAtaque1, enemigo.Personaje.DatosPersonaje.AltoAtaque1);
             listaAtaqueEnemigos.Add(ataquesEnemigo);
             enemigoList.Add(enemigo);
         }

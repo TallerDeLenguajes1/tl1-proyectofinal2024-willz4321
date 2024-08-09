@@ -44,7 +44,7 @@ namespace videoGame
                     DateTime nacimiento = SolicitarFecha("Introduce la fecha de nacimiento (YYYY-MM-DD):");
                     int edad = SolicitarEdad(nacimiento);
 
-                    Datos datosPersonaje = new Datos(tipo, nombre, apodo, nacimiento, edad, "", "");
+                    Datos datosPersonaje = new Datos(tipo, nombre, apodo, nacimiento, edad, "", "", 0, 0, 0, 0);
                     Partida partida = new Partida(datosPersonaje);
                     bienvenidaTerminada = false;
                     partida.Lanzar();

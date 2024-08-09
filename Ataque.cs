@@ -8,11 +8,11 @@ namespace videoGame
 {
      class Ataque: Sprite
     {
-        public Ataque(int destreza, string ataque)
+        public Ataque(int destreza, string ataque, int anchoA, int AltoA)
     : base(ataque)
         {
-            ancho = 6;
-            alto = 15;
+            ancho = anchoA;
+            alto = AltoA;
             velocX = 0;
             velocY = -destreza;
             activo = false;
