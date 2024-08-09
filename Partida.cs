@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using videoGame.api;
 
 namespace videoGame
 {
@@ -12,14 +13,12 @@ namespace videoGame
         bool finJuego;
         int cantidadEnemigos;
         Jugador jugador;
-        Enemigo enemigo;
         List<Enemigo> enemigoList;
         List<ListaAtaqueEnemigo> listaAtaqueEnemigos;
         ListaAtaques ataques;
         ListaAtaqueEnemigo ataquesEnemigo;
-        string rival;
         double vidas;
-        double vidasEnemigo;
+
         Marcador marcador;
         Random random;
 
@@ -251,7 +250,7 @@ namespace videoGame
         }
         private void CrearEnemigosAleatorios(ClasesP tipoJugador)
         {
-
+            EnemigoApi enemigoApi= new EnemigoApi();
             List<ClasesP> rolesDisponibles = new List<ClasesP>
                 {
                     ClasesP.ORCO,
@@ -267,20 +266,21 @@ namespace videoGame
             {
                 ClasesP rolAleatorio = rolesDisponibles[random.Next(rolesDisponibles.Count)];
                 Personaje personaje;
-
+                string nombre = enemigoApi.CrearPersonaje();
+                
                 switch (rolAleatorio)
                 {
                     case ClasesP.ORCO:
-                        personaje = new Orco(new Datos(ClasesP.ORCO, "Torurt", "El Orco", DateTime.Parse("1710-12-01"), 150, "", "", 0, 0, 0, 0));
+                        personaje = new Orco(new Datos(ClasesP.ORCO, nombre, $"El {nombre}", DateTime.Parse("1710-12-01"), 150, "", "", 0, 0, 0, 0));
                         break;
                     case ClasesP.CABALLERO:
-                        personaje = new Caballero(new Datos(ClasesP.CABALLERO, "Arthur Dayne", "La espada del amanecer", DateTime.Parse("1850-08-21"), 30, "", "", 0, 0, 0, 0));
+                        personaje = new Caballero(new Datos(ClasesP.CABALLERO, nombre, $"El {nombre}", DateTime.Parse("1850-08-21"), 30, "", "", 0, 0, 0, 0));
                         break;
                     case ClasesP.MAGO:
-                        personaje = new Mago(new Datos(ClasesP.MAGO, "Gandalf", "El blanco", DateTime.Parse("1810-12-01"), 80, "", "", 0, 0, 0, 0));
+                        personaje = new Mago(new Datos(ClasesP.MAGO, nombre, $"El {nombre}", DateTime.Parse("1810-12-01"), 80, "", "", 0, 0, 0, 0));
                         break;
                     case ClasesP.BESTIA:
-                        personaje = new Bestia(new Datos(ClasesP.BESTIA, "Ahrimasphaeinn", "La daga roja", DateTime.Parse("0531-12-01"), 2000, "", "", 0, 0, 0, 0));
+                        personaje = new Bestia(new Datos(ClasesP.BESTIA, nombre, $"El {nombre}", DateTime.Parse("0531-12-01"), 2000, "", "", 0, 0, 0, 0));
                         break;
                     default:
                         throw new Exception("Rol desconocido");

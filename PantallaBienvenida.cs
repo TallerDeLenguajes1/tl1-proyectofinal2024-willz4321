@@ -64,9 +64,8 @@ namespace videoGame
 
                 }else if (Hardware.TeclaPulsada(Hardware.TECLA_H))
                 {
-                    Console.WriteLine("tecla pulsada");
-                    Victorias();
                      bienvenidaTerminada = false;
+                     Victorias();
                 }
             }
             while (!bienvenidaTerminada);
