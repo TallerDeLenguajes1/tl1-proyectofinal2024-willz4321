@@ -192,7 +192,7 @@ namespace videoGame
 
         // Obtener la victoria actual
         var victoria = victorias[victoriaActual];
-        string mensajeJugador = $"Jugador: {victoria["Jugador"]["Nombre"]}";
+        string mensajeJugador = $"Jugador: {victoria["Jugador"]["Nombre"]} - {victoria["Jugador"]["Apodo"]} / Edad: {victoria["Jugador"]["Edad"]} ";
         string mensajeEnemigos = "Enemigos: ";
 
         var enemigos = victoria["Enemigos"].ToObject<List<JObject>>();
@@ -204,11 +204,11 @@ namespace videoGame
             if (i == enemigos.Count - 1)
             {
                 // Último enemigo, mostrar como jefe final
-                mensajeEnemigos += $"{enemigo["Nombre"]} (Jefe Final)";
+                mensajeEnemigos += $"[{enemigo["Nombre"]} (Jefe Final) - {enemigo["Apodo"]}],";
             }
             else
             {
-                mensajeEnemigos += $"{enemigo["Nombre"]}, ";
+                mensajeEnemigos += $"[{enemigo["Nombre"]} - {enemigo["Apodo"]}],";
             }
         }
 
