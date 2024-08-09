@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace videoGame
 {
@@ -329,6 +332,7 @@ namespace videoGame
 
                 if (Hardware.TeclaPulsada(Hardware.TECLA_F))
                 {
+                    GuardarHistorialJson();
                     partidaTerminada = true;
                     cerrar= true;
                 }
@@ -371,5 +375,72 @@ namespace videoGame
 
             } while (!cerrar);
         }
+
+    public void GuardarHistorialJson()
+    {
+        // Crear un objeto que almacene la información de la partida
+        var nuevoHistorialPartida = new
+        {
+            Jugador = new
+            {
+                Nombre = jugador.Personaje.DatosPersonaje.Nombre1,
+                Apodo = jugador.Personaje.DatosPersonaje.Apodo1,
+                Nacimiento = jugador.Personaje.DatosPersonaje.Nacimiento1.ToString("yyyy-MM-dd"),
+                Edad = jugador.Personaje.DatosPersonaje.Edad1
+            },
+            Enemigos = new List<object>()
+        };
+
+        // Recorrer la lista de enemigos y agregar sus datos al historial
+        foreach (var enemigo in enemigoList)
+        {
+            ((List<object>)nuevoHistorialPartida.Enemigos).Add(new
+            {
+                Nombre = enemigo.Personaje.DatosPersonaje.Nombre1,
+                Apodo = enemigo.Personaje.DatosPersonaje.Apodo1,
+                AssetNormal = enemigo.Personaje.DatosPersonaje.AssetNormal1
+            });
+        }
+
+        // Leer el archivo JSON existente (si existe)
+        string filePath = "HistorialJson.json";
+        JArray historialJsonArray;
+
+        if (File.Exists(filePath))
+        {
+            try
+            {
+                // Leer el archivo y deserializar el contenido existente
+                string jsonString = File.ReadAllText(filePath);
+                
+                // Si el archivo está vacío, inicializa un nuevo JArray
+                if (string.IsNullOrWhiteSpace(jsonString))
+                {
+                    historialJsonArray = new JArray();
+                }
+                else
+                {
+                    historialJsonArray = JArray.Parse(jsonString);
+                }
+            }
+            catch (JsonReaderException)
+            {
+                // Si ocurre un error al leer el JSON, inicializa un nuevo JArray
+                historialJsonArray = new JArray();
+            }
+        }
+        else
+        {
+            // Crear un nuevo arreglo JSON si el archivo no existe
+            historialJsonArray = new JArray();
+        }
+
+        // Agregar el nuevo historial al arreglo JSON
+        historialJsonArray.Add(JObject.FromObject(nuevoHistorialPartida));
+
+        // Convertir el historial a JSON y guardarlo en un archivo
+        string updatedJsonString = JsonConvert.SerializeObject(historialJsonArray, Formatting.Indented);
+        File.WriteAllText(filePath, updatedJsonString);
     }
+  }
 }

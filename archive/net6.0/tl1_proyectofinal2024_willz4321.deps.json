@@ -1,0 +1,39 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v6.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v6.0": {
+      "tl1_proyectofinal2024_willz4321/1.0.0": {
+        "dependencies": {
+          "Tao.Sdl": "1.2.8.1"
+        },
+        "runtime": {
+          "tl1_proyectofinal2024_willz4321.dll": {}
+        }
+      },
+      "Tao.Sdl/1.2.8.1": {
+        "runtime": {
+          "Tao.Sdl.dll": {
+            "assemblyVersion": "1.2.8.1",
+            "fileVersion": "0.0.0.0"
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "tl1_proyectofinal2024_willz4321/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Tao.Sdl/1.2.8.1": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}
