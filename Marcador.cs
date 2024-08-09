@@ -8,7 +8,7 @@ namespace videoGame
 {
     class Marcador
     {
-        private int puntos;
+        private string rival;
         private double vidas;
         private static Fuente tipoDeLetra;
 
@@ -17,9 +17,9 @@ namespace videoGame
             tipoDeLetra = new Fuente("datos\\joystix.ttf", 18);
         }
 
-        public void SetPuntos(int puntos)
+        public void SetNombreRival(string rival)
         {
-            this.puntos = puntos;
+            this.rival = rival;
         }
 
         public void SetVidas(double vidas)
@@ -29,12 +29,12 @@ namespace videoGame
 
         public void Dibujar()
         {
-            Hardware.EscribirTextoOculta("Puntos: " + puntos,
+            Hardware.EscribirTextoOculta("Rival: " + rival,
                 10, 10, // Coordenadas
                 200, 200, 200, // Colores
                 tipoDeLetra);
             Hardware.EscribirTextoOculta("Salud: " + vidas,
-                1150, 10, // Coordenadas
+                1050, 10, // Coordenadas
                 200, 200, 200, // Colores
                 tipoDeLetra);
         }

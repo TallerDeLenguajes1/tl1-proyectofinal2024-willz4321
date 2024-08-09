@@ -6,7 +6,7 @@ namespace videoGame
     {
         static void Main(string[] args)
         {
-            Hardware.Inicializar(1280, 720, 24);
+            Hardware.Inicializar(1280, 720, 32);
 
            PantallaBienvenida bienvenida = new PantallaBienvenida();
             bienvenida.Lanzar();

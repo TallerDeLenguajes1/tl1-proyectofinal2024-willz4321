@@ -14,7 +14,7 @@ namespace videoGame
         List<ListaAtaqueEnemigo> listaAtaqueEnemigos;
         ListaAtaques ataques;
         ListaAtaqueEnemigo ataquesEnemigo;
-        int puntos;
+        string rival;
         double vidas;
         double vidasEnemigo;
         Marcador marcador;
@@ -68,7 +68,6 @@ namespace videoGame
 
             ataques = new ListaAtaques(jugador.Personaje.Fuerza1, jugador.Personaje.Destreza1, jugador.Personaje.DatosPersonaje.Ataque1, jugador.Personaje.DatosPersonaje.AnchoAtaque1, jugador.Personaje.DatosPersonaje.AltoAtaque1);
             marcador = new Marcador();
-            puntos = 0;
 
         }
 
@@ -91,6 +90,7 @@ namespace videoGame
             marcador.Dibujar();
 
             enemigoList[Contador].Dibujar();
+            marcador.SetNombreRival(enemigoList[Contador].Personaje.DatosPersonaje.Nombre1);
             jugador.Dibujar();
             ataques.Dibujar();
             listaAtaqueEnemigos[contador].Dibujar();
@@ -146,12 +146,6 @@ namespace videoGame
             Hardware.Pausa(20);
         }
 
-        public void IncrementarPuntos(int puntos)
-        {
-            this.puntos += puntos;
-            marcador.SetPuntos(this.puntos);
-        }
-
         private void PerderVida(Jugador jugador)
         {
             vidas = jugador.Personaje.Salud1;
@@ -159,7 +153,7 @@ namespace videoGame
             jugador.MoverA(640, 600);
             listaAtaqueEnemigos[contador].Vaciar();
             if (vidas <= 0)
-                partidaTerminada = true;
+               GameOver();
         }
 
         private void PerderVidaEnemigo(Enemigo enemigo)
@@ -173,8 +167,6 @@ namespace videoGame
             {
                 if (contador + 1 == enemigoList.Count)
                 {
-                    Console.WriteLine(contador + 1);
-                    Console.WriteLine(cantidadEnemigos);
 
                     if (cantidadEnemigos < contador + 1)
                     {
@@ -328,6 +320,42 @@ namespace videoGame
                     200, 200, 200, // Colores
                     tipoDeLetraGrande);
                 Hardware.EscribirTextoOculta("Pulsa F para Finalizar",
+                    500, 350, // Coordenadas
+                    180, 180, 180, // Colores
+                    tipoDeLetra);
+
+                Hardware.VisualizarOculta();
+                Hardware.Pausa(20);
+
+                if (Hardware.TeclaPulsada(Hardware.TECLA_F))
+                {
+                    partidaTerminada = true;
+                    cerrar= true;
+                }
+
+            } while (!cerrar);
+        }
+
+        private void GameOver(){
+             Fuente tipoDeLetra, tipoDeLetraGrande;
+            tipoDeLetra = new Fuente("datos\\joystix.ttf", 18);
+            tipoDeLetraGrande = new Fuente("datos\\joystix.ttf", 28);
+            bool cerrar = false;
+            do
+            {
+                Hardware.BorrarPantallaOculta();
+                string mensaje = $"GAME OVER";
+                string mensaje2 = $"Inténtalo luego";
+      
+                Hardware.EscribirTextoOculta(mensaje,
+                    50, 150, // Coordenadas
+                    200, 200, 200, // Colores
+                    tipoDeLetraGrande);
+                Hardware.EscribirTextoOculta(mensaje,
+                    50, 150, // Coordenadas
+                    200, 200, 200, // Colores
+                    tipoDeLetraGrande);    
+                Hardware.EscribirTextoOculta("Pulsa F para ir al Inicio",
                     500, 350, // Coordenadas
                     180, 180, 180, // Colores
                     tipoDeLetra);
